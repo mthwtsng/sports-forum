@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css" th:href="@{/css/styles.css}">
+    <title>Home</title>
+</head>
+<body>
+    <div id="app">
+        <header class="navbar">
+            <div class="navbar-left">
+                <button th:onclick="|window.location='@{/home}'|">Home</button>
+                <button th:onclick="|window.location='@{/services}'|">Services</button>
+                <button th:onclick="|window.location='@{/about}'|">About</button>
+                <button th:onclick="|window.location='@{/contact}'|">Contact</button>
+            </div>
+            <div class="navbar-right">
+                <button th:onclick="|window.location='@{/login}'|">Login</button>
+                <button th:onclick="|window.location='@{/signup}'|">Signup</button>
+            </div>
+        </header>
+    </div>
+
+    <script src="js/index.js" th:src="@{/js/index.js}"></script>
+</body>
+</html>
