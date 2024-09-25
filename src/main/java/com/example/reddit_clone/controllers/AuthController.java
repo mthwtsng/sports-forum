@@ -1,25 +1,46 @@
 package com.example.reddit_clone.controllers;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.example.reddit_clone.model.User;
-import com.example.reddit_clone.service.AuthService;
+import com.example.reddit_clone.repository.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class AuthController {
+    
+    @Autowired
+    private UserRepository userRepo;
 
-    private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User loginUser) {
+        User user = userRepo.findByUsername(loginUser.getUsername());
+        
+        if (user != null && user.getPassword().equals(loginUser.getPassword())) { // Remember to hash passwords in production
+            return ResponseEntity.ok("User Created");
+        } else {
+            return ResponseEntity.badRequest().body("User Not Found");
+        }
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody User user) {
-        authService.register(user);
-        return ResponseEntity.ok("User registered successfully");
+    public ResponseEntity<?> Signup(@RequestBody User signupUser) {
+        if(userRepo.findByUsername(signupUser.getUsername()) != null){
+            return ResponseEntity.badRequest().body("Username already in use.");
+        }
+        userRepo.save(signupUser);
+        return ResponseEntity.ok("User Successfully Signed up");
     }
-
-    // Implement login endpoint
+    
+    
 }
