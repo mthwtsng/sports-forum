@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const Signup = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword] = useState('');
     const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
@@ -18,12 +19,15 @@ const Signup = () => {
                 credentials: 'include',
             });
 
+            if(password != confirmPassword){
+                throw new Error('Passwords do not match.')
+            }
             if (!response.ok) {
                 throw new Error('Signup Failed');
             }
 
             const data = await response.json();
-            console.log('Logged in successfully', data);
+            console.log('Signup Successful', data);
         } catch (err) {
             setError(err.message);
         }
@@ -52,10 +56,18 @@ const Signup = () => {
                         required 
                     />
                 </div>
+                <div>
+                    <label>Confirm Password:</label>
+                    <input 
+                        type="password" 
+                        value={confirmPassword} 
+                        required 
+                    />
+                </div>
                 <button type="submit">Login</button>
             </form>
         </div>
     );
 };
 
-export default Login;
+export default Signup;
