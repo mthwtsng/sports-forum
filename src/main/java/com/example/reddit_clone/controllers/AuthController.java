@@ -21,7 +21,7 @@ public class AuthController {
     @Autowired
     private UserRepository userRepo;
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User loginUser) {
         User user = userRepo.findByUsername(loginUser.getUsername());

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "./css/Auth.css"
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -19,7 +20,7 @@ const Signup = () => {
                 credentials: 'include',
             });
 
-            if(password != confirmPassword){
+            if(password !== confirmPassword){
                 throw new Error('Passwords do not match.')
             }
             if (!response.ok) {
