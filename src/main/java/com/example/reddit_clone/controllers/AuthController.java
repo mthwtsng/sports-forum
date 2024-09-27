@@ -33,6 +33,7 @@ public class AuthController {
         }
     }
 
+    
     @PostMapping("/signup")
     public ResponseEntity<?> Signup(@RequestBody User signupUser) {
         if(userRepo.findByUsername(signupUser.getUsername()) != null){

@@ -4,7 +4,7 @@ import "./css/Auth.css"
 const Signup = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
@@ -63,6 +63,7 @@ const Signup = () => {
                         type="password" 
                         value={confirmPassword} 
                         required 
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
                 <button type="submit">Login</button>
