@@ -5,26 +5,31 @@ const Signup = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
+        // Check for password match before sending the request
+        if (password !== confirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
+
         try {
-            const response = await fetch('http://localhost:8080/api/login', {
+            const response = await fetch('http://localhost:8080/api/signup', {  // Change to the correct signup endpoint
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ username, password, email }),
                 credentials: 'include',
             });
 
-            if(password !== confirmPassword){
-                throw new Error('Passwords do not match.')
-            }
             if (!response.ok) {
-                throw new Error('Signup Failed');
+                const errorData = await response.json();  // Get the error message from the response
+                throw new Error(errorData.message || 'Signup Failed');
             }
 
             const data = await response.json();
@@ -49,6 +54,15 @@ const Signup = () => {
                     />
                 </div>
                 <div>
+                    <label>Email:</label>
+                    <input 
+                        type="email" // Change to email type for better validation
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
+                        required 
+                    />
+                </div>
+                <div>
                     <label>Password:</label>
                     <input 
                         type="password" 
@@ -66,7 +80,7 @@ const Signup = () => {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit">Signup</button> {/* Changed to 'Signup' */}
             </form>
         </div>
     );
