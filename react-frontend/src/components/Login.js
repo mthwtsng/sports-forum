@@ -1,10 +1,13 @@
+// Login.js
 import React, { useState } from 'react';
-import "./css/Auth.css"
+import { useUser } from './UserContext'; // Import useUser for context
+import "./css/Auth.css";
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    const { setUser } = useUser(); // Get setUser from context
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,6 +28,7 @@ const Login = () => {
 
             const data = await response.json();
             console.log('Logged in successfully', data);
+            setUser({ id: data.user.id, name: data.user.username }); // Set user with id and name
         } catch (err) {
             setError(err.message);
         }

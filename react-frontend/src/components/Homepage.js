@@ -1,10 +1,12 @@
 // Homepage.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './css/pages.css'; // Import the CSS file
+import { useUser } from './UserContext'; // Import useUser
+import './css/pages.css';
 
 const Homepage = () => {
     const navigate = useNavigate();
+    const { user } = useUser(); // Get user from context
 
     const handleNavigation = (path) => {
         navigate(`/${path}`);
@@ -20,8 +22,14 @@ const Homepage = () => {
                     <button onClick={() => handleNavigation('contact')}>Contact</button>
                 </div>
                 <div className="navbar-right">
-                    <button onClick={() => handleNavigation('login')}>Login</button>
-                    <button onClick={() => handleNavigation('signup')}>Signup</button>
+                    {user ? (
+                        <span>Welcome, {user.name}!</span>  // Display username
+                    ) : (
+                        <>
+                            <button onClick={() => handleNavigation('login')}>Login</button>
+                            <button onClick={() => handleNavigation('signup')}>Signup</button>
+                        </>
+                    )}
                 </div>
             </header>
 

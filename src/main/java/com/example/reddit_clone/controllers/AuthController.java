@@ -24,6 +24,7 @@ public class AuthController {
     private UserRepository userRepository;
 
     @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
         String username = user.getUsername();
         String password = user.getPassword();
@@ -31,23 +32,22 @@ public class AuthController {
         if (userlist.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect Username/Password");
         } else {
-            return ResponseEntity.ok("Successfully Logged in");
+            User loggedInUser = userlist.get(0);
+            return ResponseEntity.ok(Collections.singletonMap("user", loggedInUser));
         }
     }
 
     @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
-    @PostMapping("/api/signup")
+    @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody User user) {
         // Check if the user already exists, etc.
         // Assuming userService creates a new user
         try {
             userRepository.save(user);
-            return ResponseEntity.ok().body(Collections.singletonMap("message", "User created successfully"));
+            return ResponseEntity.ok(Collections.singletonMap("message", "User created successfully"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                 .body(Collections.singletonMap("message", "User creation failed: " + e.getMessage()));
         }
     }
-
 }
-
