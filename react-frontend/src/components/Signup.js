@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import "./css/Auth.css"
+import { useNavigate } from 'react-router-dom';  // Import useNavigate
+import './css/Auth.css';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -7,6 +8,7 @@ const Signup = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
+    const navigate = useNavigate();  // Initialize navigate
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,7 +20,7 @@ const Signup = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/api/signup', {  // Change to the correct signup endpoint
+            const response = await fetch('http://localhost:8080/api/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,7 +58,7 @@ const Signup = () => {
                 <div>
                     <label>Email:</label>
                     <input 
-                        type="email" // Change to email type for better validation
+                        type="email" 
                         value={email} 
                         onChange={(e) => setEmail(e.target.value)} 
                         required 
@@ -80,8 +82,14 @@ const Signup = () => {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
-                <button type="submit">Signup</button> {/* Changed to 'Signup' */}
+                <button type="submit">Signup</button>
             </form>
+
+            {/* Button to navigate to the login page */}
+            <div>
+                <h3>Already have an account? <a href = "/login">Login</a></h3>
+            </div>
+           
         </div>
     );
 };
