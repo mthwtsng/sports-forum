@@ -1,13 +1,14 @@
-// Login.js
 import React, { useState } from 'react';
-import { useUser } from './UserContext'; // Import useUser for context
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useUser } from './UserContext';
 import "./css/Auth.css";
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
-    const { setUser } = useUser(); // Get setUser from context
+    const { setUser } = useUser();
+    const navigate = useNavigate(); // Initialize useNavigate
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +29,8 @@ const Login = () => {
 
             const data = await response.json();
             console.log('Logged in successfully', data);
-            setUser({ id: data.user.id, name: data.user.username }); // Set user with id and name
+            setUser({ id: data.user.id, name: data.user.username });
+            navigate('/homepage'); // Redirect to Homepage
         } catch (err) {
             setError(err.message);
         }
@@ -60,7 +62,7 @@ const Login = () => {
                 <button type="submit">Login</button>
             </form>
             <div>
-                <h3>Don't have an account? <a href = "/signup">Signup</a></h3>
+                <h3>Don't have an account? <a href="/signup">Signup</a></h3>
             </div>
         </div>
     );

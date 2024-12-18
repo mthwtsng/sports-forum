@@ -23,10 +23,15 @@ body {
 .navbar-left,
 .navbar-right {
     display: flex;
+    color: white;
 }
 
 .navbar-right {
     margin-right: 5%; /* Align the right section to the right */
+}
+
+.navbar-right span {
+    font-size: 1.1em;
 }
 
 .navbar button {
