@@ -11,30 +11,29 @@ const Login = () => {
     const navigate = useNavigate(); // Initialize useNavigate
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        
-        try {
-            const response = await fetch('http://localhost:8080/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-                credentials: 'include',
-            });
+    e.preventDefault();
 
-            if (!response.ok) {
-                throw new Error('Login failed');
-            }
+    try {
+        const response = await fetch('http://localhost:8080/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+            credentials: 'include', // Include cookies for session
+        });
 
-            const data = await response.json();
-            console.log('Logged in successfully', data);
-            setUser({ id: data.user.id, name: data.user.username });
-            navigate('/homepage'); // Redirect to Homepage
-        } catch (err) {
-            setError(err.message);
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Login failed');
         }
-    };
+
+        const data = await response.json();
+        console.log('Login successful:', data);
+        navigate('/homepage'); // Redirect to homepage
+    } catch (err) {
+        setError(err.message);
+    }
+};
+
 
     return (
         <div className="login-container">
