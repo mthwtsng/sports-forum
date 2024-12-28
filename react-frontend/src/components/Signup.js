@@ -8,6 +8,7 @@ const Signup = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();  // Initialize navigate
 
     const handleSubmit = async (e) => {
@@ -33,11 +34,14 @@ const Signup = () => {
                 const errorData = await response.json();  // Get the error message from the response
                 throw new Error(errorData.message || 'Signup Failed');
             }
-
             const data = await response.json();
+            setSuccessMessage('Signup successful! You can now log in.');
+            setError(null);  // Clear any previous errors
+
             console.log('Signup Successful', data);
         } catch (err) {
             setError(err.message);
+            setSuccessMessage('');  // Clear success message in case of error
         }
     };
 
@@ -45,6 +49,7 @@ const Signup = () => {
         <div className="login-container">
             <h2>Signup</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>} {/* Show success message */}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Username:</label>
@@ -85,11 +90,14 @@ const Signup = () => {
                 <button type="submit">Signup</button>
             </form>
 
-            {/* Button to navigate to the login page */}
-            <div>
-                <h3>Already have an account? <a href = "/login">Login</a></h3>
-            </div>
-           
+            {/* Success Message Button: Navigate to login page */}
+            {successMessage && (
+                <div>
+                    <h3>Already have an account? 
+                        <button onClick={() => navigate('/login')}>Login</button>
+                    </h3>
+                </div>
+            )}
         </div>
     );
 };

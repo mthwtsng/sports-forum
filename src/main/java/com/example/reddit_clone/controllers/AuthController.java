@@ -42,7 +42,7 @@ public class AuthController {
     public ResponseEntity<?> signup(@RequestBody User user) {
         if (userRepository.existsByUsername(user.getUsername()) || userRepository.existsByEmail(user.getEmail())) {
             Map<String, String> response = new HashMap<>();
-            response.put("error", "Username or email already taken.");
+            response.put("message", "Username or email already taken.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);  // Return as JSON
         }
         try {
