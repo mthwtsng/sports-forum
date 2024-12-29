@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 
@@ -28,6 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @RestController
 @RequestMapping("/api")
 public class AuthController {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -43,15 +46,17 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginData) {
         String username = loginData.get("username");
         String password = loginData.get("password");
-
+        System.out.println("Login attempt for user: " + username);
+    
         try {
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             return ResponseEntity.ok(Collections.singletonMap("message", "Login successful"));
         } catch (Exception e) {
+            e.printStackTrace(); // Log the exception
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                                .body(Collections.singletonMap("error", "Invalid credentials"));
+                                 .body(Collections.singletonMap("error", "Invalid credentials"));
         }
     }
 
@@ -65,5 +70,16 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword())); // Encrypt password
         userRepository.save(user);
         return ResponseEntity.ok(Collections.singletonMap("message", "User created successfully"));
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+    @GetMapping("/me")
+    public ResponseEntity<?> getAuthenticatedUser(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        // If you want more details, you can use a custom response object or map
+        return ResponseEntity.ok(Collections.singletonMap("username", userDetails.getUsername()));
     }
 }

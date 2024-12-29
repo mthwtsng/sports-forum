@@ -1,7 +1,7 @@
 // pages/signup.js
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';  // Import useRouter from Next.js
-import '../styles/auth.css';  // Correct path to your CSS file
+import { useRouter } from 'next/router'; 
+import '../styles/auth.css'; 
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -10,17 +10,11 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
-    const router = useRouter();  // Initialize useRouter
+    const router = useRouter(); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Check for password match before sending the request
-        if (password !== confirmPassword) {
-            setError('Passwords do not match.');
-            return;
-        }
-
+    
         try {
             const response = await fetch('http://localhost:8080/api/signup', {
                 method: 'POST',
@@ -30,27 +24,27 @@ const Signup = () => {
                 body: JSON.stringify({ username, password, email }),
                 credentials: 'include',
             });
-
+    
             if (!response.ok) {
-                const errorData = await response.json();  // Get the error message from the response
-                throw new Error(errorData.message || 'Signup Failed');
+                const errorData = await response.json().catch(() => ({})); 
+                throw new Error(errorData.message || 'Signup failed');
             }
-            const data = await response.json();
-            setSuccessMessage('Signup successful! You can now log in.');
-            setError(null);  // Clear any previous errors
-
-            console.log('Signup Successful', data);
+    
+            const data = await response.json().catch(() => ({}));
+            setSuccessMessage(data.message || 'Signup successful!');
+            setError(null);
         } catch (err) {
             setError(err.message);
-            setSuccessMessage('');  // Clear success message in case of error
+            setSuccessMessage('');
         }
     };
+    
 
     return (
         <div className="login-container">
             <h2>Signup</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>} {/* Show success message */}
+            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>} {}
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Username:</label>
@@ -91,7 +85,7 @@ const Signup = () => {
                 <button type="submit">Signup</button>
             </form>
 
-            {/* Success Message Button: Navigate to login page */}
+            {}
             {successMessage && (
                 <div>
                     <h3>Already have an account? 
