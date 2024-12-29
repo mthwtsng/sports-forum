@@ -1,15 +1,15 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router'; // Import useRouter from Next.js
 
 const Start = () => {
-    const navigate = useNavigate();
+    const router = useRouter(); // Initialize router
 
     const handleLogin = () => {
-        navigate('/login');
+        router.push('/login'); // Navigate to the login page
     };
 
     const handleSignup = () => {
-        navigate('/signup');
+        router.push('/signup'); // Navigate to the signup page
     };
 
     return (

@@ -1,6 +1,7 @@
+// pages/signup.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate
-import './css/Auth.css';
+import { useRouter } from 'next/router';  // Import useRouter from Next.js
+import '../styles/auth.css';  // Correct path to your CSS file
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -9,7 +10,7 @@ const Signup = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState('');
-    const navigate = useNavigate();  // Initialize navigate
+    const router = useRouter();  // Initialize useRouter
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -94,7 +95,7 @@ const Signup = () => {
             {successMessage && (
                 <div>
                     <h3>Already have an account? 
-                        <button onClick={() => navigate('/login')}>Login</button>
+                        <button onClick={() => router.push('/login')}>Login</button>
                     </h3>
                 </div>
             )}
