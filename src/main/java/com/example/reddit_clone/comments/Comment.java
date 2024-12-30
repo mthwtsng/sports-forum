@@ -9,6 +9,7 @@ import com.example.reddit_clone.users.User;
 import com.example.reddit_clone.posts.Post;
 
 @Entity
+@Table(name = "comments")
 public class Comment {
     
     @Id

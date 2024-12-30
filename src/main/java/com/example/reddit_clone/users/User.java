@@ -1,7 +1,11 @@
-package com.example.reddit_clone.model;
+package com.example.reddit_clone.users;
 
 
 import java.util.List;
+
+import com.example.reddit_clone.comments.Comment;
+import com.example.reddit_clone.likes.PostLike;
+import com.example.reddit_clone.posts.Post;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -32,10 +36,14 @@ public class User {
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Like> likes;
+    private List<PostLike> likes;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+
+    public User(){
+        
+    }
 
     public User(String username, String password, String email) {
         this.username = username;
