@@ -1,12 +1,9 @@
-package com.example.reddit_clone.controllers;
+package com.example.reddit_clone.users;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.reddit_clone.model.User;
-import com.example.reddit_clone.repository.UserRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.Collections;

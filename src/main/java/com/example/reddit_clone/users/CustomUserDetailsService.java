@@ -1,4 +1,4 @@
-package com.example.reddit_clone.security;
+package com.example.reddit_clone.users;
 
 import java.util.ArrayList;
 
@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.reddit_clone.model.User;
-import com.example.reddit_clone.repository.UserRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
