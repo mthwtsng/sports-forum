@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router'; 
 import '../styles/auth.css'; 
+import "../styles/pages.css"; 
 
 const Signup = () => {
     const [username, setUsername] = useState('');

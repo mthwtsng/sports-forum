@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router'; 
 import "../styles/auth.css"; 
+import "../styles/pages.css"; 
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -8,21 +9,23 @@ const Login = () => {
     const [error, setError] = useState(null);
     const router = useRouter(); 
 
-    // Check if the user is already logged in (redirect if authenticated)
+    // Checks session if user logged in, sends to homepage if true, else go to login page 
     const checkUserAuth = async () => {
         try {
             const response = await fetch('http://localhost:8080/api/me', {
                 method: 'GET',
-                credentials: 'include', 
+                credentials: 'include',
             });
-
+    
             if (response.ok) {
                 router.push('/homepage'); 
             }
         } catch (error) {
             console.error('Error checking authentication:', error);
+
         }
     };
+    
 
     React.useEffect(() => {
         checkUserAuth();
@@ -43,7 +46,8 @@ const Login = () => {
                 const errorText = await response.text(); 
                 throw new Error(errorText || 'Login failed');
             }
-    
+            
+            
             router.push('/homepage');
         } catch (err) {
             setError(err.message);

@@ -2,12 +2,13 @@ body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background-color: #f8f5f0; /* Soft beige background */
     font-size: 10px;
+    color: #333;
 }
 
 .navbar {
-    background-color: #333;
+    background-color: #eceae5; /* Light grey-beige background */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: fixed;
     width: 100%;
@@ -16,41 +17,88 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 2%; /* Use percentage for padding */
-    max-width: 100%; /* Ensures it spans the full width of the viewport */
+    padding: 0 2%;
+    max-width: 100%;
 }
 
 .navbar-left,
 .navbar-right {
     display: flex;
-    color: white;
+    align-items: center;
 }
 
 .navbar-right {
-    margin-right: 5%; /* Align the right section to the right */
-}
-
-.navbar-right span {
-    font-size: 1.1em;
+    margin-right: 5%;
 }
 
 .navbar button {
-    display: block;
-    color: #f2f2f2;
+    color: #333;
+    background-color: #f0ede9; /* Slightly different color for button */
     text-align: center;
-    padding: 20px 5%; /* Use percentage for padding to scale with viewport */
+    padding: 10px 15px;
     text-decoration: none;
-    font-size: 1.1em; /* Use em units for font-size */
-    transition: background-color 0.3s, color 0.3s;
-    border-radius: 10px;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.2s;
+    border-radius: 20px; /* Fully rounded buttons */
     margin: 5px 10px;
-    border: none; /* Remove default button border */
-    background: none; /* Remove default button background */
-    cursor: pointer; /* Change cursor to pointer on hover */
-    outline: none; /* Remove default button outline */
+    border: 1px solid #d6d3ce;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .navbar button:hover {
-    background-color: #575757;
-    color: #ffffff;
+    background-color: #e0ddd8; /* Slightly darker on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.navbar .user-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    background-color: #f0ede9;
+    border-radius: 20px;
+    border: 1px solid #d6d3ce;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #d6d3ce;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+    z-index: 1000;
+}
+
+.navbar .dropdown-menu button {
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    background-color: #fff;
+    border: none;
+    border-radius: 0;
+}
+
+.navbar .dropdown-menu button:hover {
+    background-color: #f0ede9;
+}
+
+.navbar .user-dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+main {
+    padding: 80px 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #444;
 }
