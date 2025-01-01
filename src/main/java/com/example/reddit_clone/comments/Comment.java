@@ -31,13 +31,28 @@ public class Comment {
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
-    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> replies;
 
     private LocalDateTime createdAt;
 
     public Comment() {
         this.createdAt = LocalDateTime.now();
     }
+
+    public void setAuthor(User user){
+        this.author = author;
+    }
+
+    public void setPost(Post post){
+        this.post = post;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setParentComment(Comment parentComment) {
+        this.parentComment = parentComment;
+    }
+
 
 }

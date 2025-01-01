@@ -27,4 +27,12 @@ public class PostLike {
     public PostLike() {
         this.createdAt = LocalDateTime.now();
     }
+
+    public void setPost(Post post){
+        this.post = post;
+    }
+
+    public void setUser(User user){
+        this.user = user;
+    }
 }
