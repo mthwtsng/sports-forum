@@ -19,6 +19,7 @@ public class Comment {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
@@ -52,6 +53,14 @@ public class Comment {
 
     public void setParentComment(Comment parentComment) {
         this.parentComment = parentComment;
+    }
+
+    public Comment getParentComment() {
+        return parentComment;
+    }
+
+    public String getContent() {
+        return content;
     }
 
 
