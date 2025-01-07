@@ -1,5 +1,8 @@
 package com.example.reddit_clone.users;
 
+import java.util.Collections;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +14,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
+import com.example.reddit_clone.users.User;
+import com.example.reddit_clone.users.UserRepository;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import java.util.Collections;
-import java.util.Map;
-
 @Service
-public class UserService {
-
+public class AuthService {
+    
     @Autowired
     private UserRepository userRepository;
 
@@ -75,7 +78,18 @@ public class UserService {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
         }
-        return ResponseEntity.ok(authentication.getPrincipal());
+    
+        // Get the username from the authentication object
+        String username = authentication.getName();
+    
+        // Retrieve the full User entity from the database
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    
+        // Return the full User entity or a custom DTO
+        return ResponseEntity.ok(user);
     }
 
     /**

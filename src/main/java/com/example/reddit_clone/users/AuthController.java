@@ -4,17 +4,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.reddit_clone.users.User;
+
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-public class UserController {
+public class AuthController {
 
     
-    private final UserService authService;
+    private final AuthService authService;
 
-    public UserController(UserService authService) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
