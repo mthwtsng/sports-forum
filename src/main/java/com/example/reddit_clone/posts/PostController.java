@@ -9,6 +9,7 @@ import com.example.reddit_clone.likes.PostLike;
 import com.example.reddit_clone.users.User;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,5 +39,11 @@ public class PostController {
     @PostMapping("/{postId}/comments")
     public ResponseEntity<Comment> addComment(@PathVariable Long postId, @RequestBody Comment comment, @RequestParam Long userId) {
         return ResponseEntity.ok(postService.addComment(postId, userId, comment.getParentComment(), comment.getContent()));
+    }
+
+    @GetMapping("/latest")
+    public ResponseEntity<Post> getLatestPost() {
+        Post latestPost = postService.getLatestPost();
+        return latestPost != null ? ResponseEntity.ok(latestPost) : ResponseEntity.noContent().build();
     }
 }

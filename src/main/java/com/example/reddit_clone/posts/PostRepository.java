@@ -14,4 +14,6 @@ import com.example.reddit_clone.users.User;
 public interface PostRepository extends JpaRepository<Post, Integer> {
     List<Post> findByAuthor(User author);
     Optional<Post> findById(Long PostId);
+    Post findTopByOrderByCreatedDateDesc();
+    
 }

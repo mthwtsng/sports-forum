@@ -49,4 +49,7 @@ public class PostService {
         return commentRepository.save(comment);
     }
     
+    public Post getLatestPost() {
+        return postRepository.findTopByOrderByCreatedDateDesc();
+    }
 }
