@@ -42,11 +42,9 @@ public class AuthService {
         String username = loginData.get("username");
         String password = loginData.get("password");
 
-        // Authenticate the user
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Store security context in the session
         HttpSession session = request.getSession();
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
@@ -63,7 +61,6 @@ public class AuthService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                 .body(Collections.singletonMap("error", "Username or email already taken."));
         }
-        // Encode password and save user
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return ResponseEntity.ok(Collections.singletonMap("message", "User created successfully"));
@@ -79,16 +76,14 @@ public class AuthService {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User is not authenticated");
         }
     
-        // Get the username from the authentication object
         String username = authentication.getName();
     
-        // Retrieve the full User entity from the database
         User user = userRepository.findByUsername(username).orElse(null);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
     
-        // Return the full User entity or a custom DTO
+        // Return the full User entity
         return ResponseEntity.ok(user);
     }
 

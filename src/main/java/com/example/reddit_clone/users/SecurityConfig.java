@@ -3,6 +3,8 @@ package com.example.reddit_clone.users;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -23,43 +25,35 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
 
-
     public SecurityConfig(CustomUserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/login", "/api/signup", "/api/me").permitAll() // No authentication required for these endpoints
-                .anyRequest().authenticated() // All other requests require authentication
+                .requestMatchers("/api/login", "/api/signup", "/api/me", "/posts").permitAll() 
+                .anyRequest().authenticated()
             )
             .formLogin(formLogin -> formLogin
-                .loginPage("/login") // Specify your login 
+                .loginPage("/login")
             )
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Session is created if required
-            )
-            .securityContext(securityContext -> securityContext
-                .securityContextRepository(new HttpSessionSecurityContextRepository()) // Store the authentication in the session
-            )
-            .securityContext(securityContext -> 
-                securityContext.requireExplicitSave(true)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) 
             );
 
-        http.csrf(csrf -> csrf.disable());
-        return http.build(); // Make sure to call `http.build()` to return the SecurityFilterChain
+        return http.build();
     }
 
     @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-            .userDetailsService(userDetailsService)
-            .passwordEncoder(passwordEncoder())
-            .and().build();
+    public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder, CustomUserDetailsService userDetailsService) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return new ProviderManager(provider);
     }
 
     @Bean
@@ -70,16 +64,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000"); // React app URL
-        configuration.addAllowedMethod("POST");
-        configuration.addAllowedMethod("GET");
-        configuration.addAllowedMethod("OPTIONS");
-        configuration.addAllowedHeader("Content-Type");
-        configuration.addAllowedHeader("Authorization");
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedMethod("*"); 
+        configuration.addAllowedHeader("*"); 
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }
+
