@@ -52,4 +52,8 @@ public class PostService {
     public Post getLatestPost() {
         return postRepository.findTopByOrderByCreatedDateDesc();
     }
+    
+    public List<Post> getAllPosts() {
+        return postRepository.findAllByOrderByCreatedDateDesc();
+    }
 }

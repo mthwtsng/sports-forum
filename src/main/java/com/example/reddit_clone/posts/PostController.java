@@ -8,6 +8,8 @@ import com.example.reddit_clone.comments.Comment;
 import com.example.reddit_clone.likes.PostLike;
 import com.example.reddit_clone.users.User;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,5 +47,11 @@ public class PostController {
     public ResponseEntity<Post> getLatestPost() {
         Post latestPost = postService.getLatestPost();
         return latestPost != null ? ResponseEntity.ok(latestPost) : ResponseEntity.noContent().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Post>> getAllPosts() {
+        List<Post> posts = postService.getAllPosts();
+        return posts.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(posts);
     }
 }

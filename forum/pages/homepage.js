@@ -6,27 +6,27 @@ import "../styles/pages.css";
 
 const Homepage = () => {
     const [user, setUser] = useState(null);
-    const [latestPost, setLatestPost] = useState(null);
+    const [posts, setPosts] = useState([]);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
     const router = useRouter();
 
     useEffect(() => {
         checkUserAuth(setUser, router);
-        fetchLatestPost();
+        fetchPosts();
     }, [router]);
 
-    const fetchLatestPost = async () => {
+    const fetchPosts = async () => {
         try {
-            const response = await fetch('http://localhost:8080/posts/latest');
+            const response = await fetch('http://localhost:8080/posts');
             if (response.ok) {
                 const data = await response.json();
-                setLatestPost(data);
+                setPosts(data);
             } else {
-                console.error('Failed to fetch latest post');
+                console.error('Failed to fetch posts');
             }
         } catch (error) {
-            console.error('Error fetching latest post:', error);
+            console.error('Error fetching posts:', error);
         }
     };
 
@@ -38,8 +38,8 @@ const Homepage = () => {
                 body: JSON.stringify(post),
             });
             if (response.ok) {
-                fetchLatestPost();
-                setIsPopupOpen(false); 
+                fetchPosts(); 
+                setIsPopupOpen(false);
             } else {
                 console.error('Failed to create post');
             }
@@ -59,13 +59,19 @@ const Homepage = () => {
                         onSubmit={handleCreatePost}
                     />
                 )}
-                {latestPost && (
-                    <div className="latest-post">
-                        <h2>{latestPost.title}</h2>
-                        <p>{latestPost.content}</p>
-                        <p>By {latestPost.author}</p>
-                    </div>
-                )}
+                <div className="posts-container">
+                    {posts.length > 0 ? (
+                        posts.map(post => (
+                            <div key={post.id} className="post">
+                                <h2>{post.title}</h2>
+                                <p>{post.content}</p>
+                                <p>By {post.author}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No posts available</p>
+                    )}
+                </div>
             </main>
         </div>
     );
