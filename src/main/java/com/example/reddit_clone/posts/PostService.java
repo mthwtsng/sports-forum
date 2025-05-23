@@ -27,9 +27,11 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
-    public Post createPost(Post post) {
+    public Post createPost(Post post, User user) {
+        post.setUser(user);
         return postRepository.save(post);
     }
+
     public PostLike addLike(Long postId, User user) {
         PostLike like = new PostLike();
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + postId));;
@@ -43,7 +45,7 @@ public class PostService {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post not found with ID: " + postId));
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
         comment.setPost(post);
-        comment.setAuthor(user);
+        comment.setUser(user);
         comment.setParentComment(parentComment);
         comment.setContent(content);
         return commentRepository.save(comment);

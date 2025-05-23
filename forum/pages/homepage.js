@@ -31,14 +31,23 @@ const Homepage = () => {
     };
 
     const handleCreatePost = async (post) => {
+        if (!user) {
+            alert("You must be logged in to post!");
+            return;
+        }
+
         try {
             const response = await fetch('http://localhost:8080/posts', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json'
+
+                },
+                credentials: 'include', 
                 body: JSON.stringify(post),
             });
             if (response.ok) {
-                fetchPosts(); 
+                fetchPosts();
                 setIsPopupOpen(false);
             } else {
                 console.error('Failed to create post');
@@ -52,7 +61,8 @@ const Homepage = () => {
         <div id="app">
             <Navbar user={user} onLogout={() => handleLogout(setUser, router)} />
             <main>
-                <button onClick={() => setIsPopupOpen(true)}>New Post</button>
+                {user && <button onClick={() => setIsPopupOpen(true)}>New Post</button>}
+                {!user && <p>You must be logged in to create posts.</p>}
                 {isPopupOpen && (
                     <PostPopup
                         onClose={() => setIsPopupOpen(false)}
@@ -65,7 +75,7 @@ const Homepage = () => {
                             <div key={post.id} className="post">
                                 <h2>{post.title}</h2>
                                 <p>{post.content}</p>
-                                <p>By {post.author}</p>
+                                <p><strong>By {post.user.username}</strong></p>
                             </div>
                         ))
                     ) : (

@@ -84,7 +84,13 @@ public class AuthService {
         }
     
         // Return the full User entity
-        return ResponseEntity.ok(user);
+        // Return a DTO instead of the full User entity
+        Map<String, Object> userDto = Map.of(
+            "id", user.getId(),
+            "username", user.getUsername(),
+            "email", user.getEmail()
+        );
+        return ResponseEntity.ok(userDto);
     }
 
     /**
