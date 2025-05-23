@@ -1,5 +1,6 @@
 package com.example.reddit_clone.posts;
 
+import com.example.reddit_clone.users.User;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
@@ -13,12 +14,19 @@ public class Post {
 
     private String title;
     private String content;
-    private String author;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @CreatedDate
     private LocalDateTime createdDate;
 
-    // Getters and Setters
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
+    }
+
     public Long getId() {
         return id;
     }
@@ -43,19 +51,15 @@ public class Post {
         this.content = content;
     }
 
-    public String getAuthor() {
-        return author;
+    public User getUser() {
+        return user;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
     }
 }

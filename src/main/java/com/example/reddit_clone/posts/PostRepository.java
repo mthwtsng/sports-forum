@@ -12,7 +12,7 @@ import com.example.reddit_clone.users.User;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Integer> {
-    List<Post> findByAuthor(User author);
+    List<Post> findByUser(User user);
     Optional<Post> findById(Long PostId);
     Post findTopByOrderByCreatedDateDesc();
     List<Post> findAllByOrderByCreatedDateDesc();

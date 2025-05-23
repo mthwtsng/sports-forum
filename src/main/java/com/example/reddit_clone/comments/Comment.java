@@ -25,8 +25,8 @@ public class Comment {
     private Post post;
 
     @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false)
-    private User author;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "parent_comment_id")
@@ -39,8 +39,8 @@ public class Comment {
         this.createdAt = LocalDateTime.now();
     }
 
-    public void setAuthor(User user){
-        this.author = author;
+    public void setUser(User user){
+        this.user = user;
     }
 
     public void setPost(Post post){
